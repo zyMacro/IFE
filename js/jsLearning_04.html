@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title></title>
+<style type="text/css">
+	body{
+	text-align:center;
+	}
+	.node{
+		background-color: red;
+		float: left;
+		padding: 10px;
+		margin: 5px 5px;
+	}
+</style>
+	
+</head>
+<body>
+<input id='input' />
+<span id='button'>
+<button id='btnLeftIn'>左侧入</button>
+<button id='btnRightIn'>右侧入</button>
+<button id='btnLeftOut'>左侧出</button>
+<button id='btnRightOut'>右侧出</button>
+</span>
+<div id='list' ></div>
+
+
+<script type="text/javascript">
+
+    var btn=document.getElementById('button');
+	// var btn1=document.getElementById('btnLeftIn');
+	// var btn2=document.getElementById('btnRightIn');
+	// var btn3=document.getElementById('btnLeftOut');
+	// var btn4=document.getElementById('btnRightOut');
+	var input=document.getElementById('input');
+	var text=document.getElementById('list');
+
+	var list=[];
+	btn.onclick=function(event){
+		var event=event||window.event;
+		var target=event.target||event.srcElement;
+		if(target.nodeName=='BUTTON'){
+			switch(target.id){
+				case 'btnLeftIn': insertLeft();break;
+				case 'btnRightIn': insertRight(); break;
+				case 'btnLeftOut': removeLeft(); break;
+				case 'btnRightOut': removeRight(); break;
+			}
+		}
+	}
+
+    function insertLeft(){
+		list.unshift(input.value);
+			display(list);
+	}
+	function insertRight(){
+		list.push(input.value);
+		display(list);
+	}
+	function removeLeft(){
+		if(list.length!=0){
+			list.shift();
+			display(list);
+		}
+		else{
+			alert('nothing to delete');
+		}
+		
+	}
+	function removeRight(){
+		if(list.length!=0){
+			list.pop();
+			display(list);
+			}
+		else{
+			alert('nothing to delete');
+		}
+		
+	}
+	function display(arr){
+		var len=arr.length;
+		text.innerText='';
+
+		for(var i=0;i<len;i++){
+			var node=document.createElement('p');
+				node.innerText=arr[i];
+				text.appendChild(node);
+				node.className='node';
+		}
+	}
+
+
+
+</script>
+</body>
+</html>
