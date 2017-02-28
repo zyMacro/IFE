@@ -9,48 +9,37 @@
 		flex-wrap: wrap;
 		justify-content: space-between;
 		align-items: center;
-		padding: 20px;
 	}
-	.flex-item{
-		background-color: #f00;
+	.flex-container div{
 		width: 150px;
-
-	}
-	.div1{
-		height: 120px;
-	
-	}
-	.div2{
-		height: 100px;
-		
-
-	}
-	.div3{
-		height: 40px;
-		
-
-	}
-	.div4{
-		height: 200px;
 		padding: 20px;
-		background-color: #0f0;
+		border: 1px solid #f00;
 	}
-
+	.flex-container div:nth-child(1){
+		width: 150px;
+		height: 120px;
+	}
+	.flex-container div:nth-child(2){
+		height: 100px;
+	}
+	.flex-container div:nth-child(3){
+		height: 40px;
+	}
+	.flex-container div:nth-child(4){
+		height: 200px;
+		border:1px solid #0f0;
+	}
 	@media all and (max-width: 640px){
-	.div1{
-		order:2;
-	
+	.flex-container{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: flex-start;
+		padding: 20px;
 	}
-	.div2{
-		order:3;	
-	}
-	.div3{
-		order: 4
-		
-
-	}
-	.div4{
-		order: 1;
+	.flex-container div:nth-child(4){
+		order: -1;
 	}
 	}
 
@@ -58,11 +47,10 @@
 </head>
 <body>
 <div class="flex-container">
-	<div class="flex-item div1"></div>
-	<div class="flex-item div2"></div>
-	<div class="flex-item div3"></div>
-	<div class="flex-item div4"></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
 </div>
-
 </body>
 </html>
