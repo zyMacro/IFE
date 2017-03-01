@@ -1,0 +1,174 @@
+<!-- Note
+task:
+1.限制输入的数字
+2.限制队列元素的数量
+3.展示方式的改变
+4.排序
+
+solution:
+1.利用html5的placeholder属性提示用户输入数值的范围，并在获取数值时添加一次判断
+2.增加一次判断即可
+3.利用js改变样式，由于该例中要求元素不能换行，且可以设置宽高，所有我给元素display属性设置为inline-block
+为了让各个span之间底部对齐，我采用flex布局方式，但发现不起作用，没想明白是为什么。
+4.排序方面使用了冒泡排序和插入排序两种排序方法，分别实现了顺序排序和逆序排列 -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title></title>
+<style type="text/css">
+	body{
+	text-align:center;
+	}
+	.flex-container{
+		display:  flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		align-content: flex-start;
+		align-items:flex-end;
+	}	
+	.node{
+		background-color: red;
+		padding: 10px;
+		margin: 5px 5px;
+		width:20px;
+		}
+	span{
+		display: inline-block;
+	}
+</style>
+	
+</head>
+<body>
+<input id='input' placeholder='please input 10~100'/>
+<span id='button'>
+<button id='btnLeftIn'>左侧入</button>
+<button id='btnRightIn'>右侧入</button>
+<button id='btnLeftOut'>左侧出</button>
+<button id='btnRightOut'>右侧出</button>
+<button id='sort'>顺序排列</button>
+<button id='resort'>逆序排列</button>
+</span>
+<div class="flex-container">
+<div id='list' ></div>	
+</div>
+
+
+
+<script type="text/javascript">
+
+    var btn=document.getElementById('button');
+	var input=document.getElementById('input');
+	var text=document.getElementById('list');
+
+	var list=[];
+	btn.onclick=function(event){
+         getValue=input.value;
+        if(getValue>=10&&getValue<=100){
+        	var event=event||window.event;
+			var target=event.target||event.srcElement;
+			if(target.nodeName=='BUTTON'){
+				switch(target.id){
+					case 'btnLeftIn': insertLeft();break;
+					case 'btnRightIn': insertRight(); break;
+					case 'btnLeftOut': removeLeft(); break;
+					case 'btnRightOut': removeRight(); break;
+					case 'sort': bubbleSort(); break;
+					case 'resort': insertSort(); break;
+				}
+			}
+        }
+        else{
+        	alert('the value input is not permitted');
+        }
+	
+	}
+
+    function insertLeft(){
+    	if(list.length==60){
+    		alert('the limit number is 60');
+    	}
+    	
+    	else{
+    		list.unshift(getValue);
+    		display(list);
+    	}
+    	
+	}
+	function insertRight(){
+		if(list.length==60){
+			alert('the limit number is 60');
+    	}
+    	else{
+    		list.push(getValue);
+			display(list);
+    	}
+		
+	}
+	function removeLeft(){
+		if(list.length!=0){
+			list.shift();
+			display(list);
+		}
+		else{
+			alert('nothing to delete');
+		}
+	}
+	function removeRight(){
+		if(list.length!=0){
+			list.pop();
+			display(list);
+			}
+		else{
+			alert('nothing to delete');
+		}
+		
+	}
+	function bubbleSort(){
+		//顺序
+		var len=list.length;
+		for(var i=0;i<len-1;i++)
+			for(var j=0;j<len-i-1;j++){
+				if(list[j]>list[j+1]){
+					swap(list,j,j+1);
+				}
+			}
+		display(list);
+	}
+	function insertSort(){
+		//倒序
+		var len=list.length;
+		for(var i=1;i<len;i++){
+			if(list[i-1]<list[i]){
+				var temp=list[i];
+				var j=i;
+			    while(j>0&&list[j-1]<temp){
+			    	list[j]=list[j-1];
+			    	j-=1;
+			    }
+			    list[j]=temp;
+			}
+		}
+		display(list);
+	}
+	function swap(arr,index1,index2){
+		var temp=arr[index1];
+		arr[index1]=arr[index2];
+		arr[index2]=temp;
+		return arr;
+	}
+	function display(arr){
+		var len=arr.length;
+		text.innerText='';
+		for(var i=0;i<len;i++){
+			var node=document.createElement('span');
+				node.innerText=arr[i];
+				var height=Math.floor(((arr[i]-10)/90*100))+'px';
+				node.style.height=height;
+				text.appendChild(node);
+				node.className='node';
+		}
+	}
+</script>
+</body>
+</html>
