@@ -1,43 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>
-		
+	<title>	
 	</title>
+	<meta charset="utf-8">
 <style type="text/css">
+  /*  span{
+    	text-align: center;
+    	/*margin:0 auto;*/
+    /*}*/
     div{
-    	display: inline-block;
-    	
-		border:solid 1px;
-		border-color:#ff0000;
-		margin:5px;
+		border:1px solid black;
+		padding: 20px;
+		margin:20px;
     }
-	.flex-container{
-    	/*padding: 10px;*/
+    .flex-container{
+    	width: 1200px;
+    }
+    
+	.flex-container,.flex-items1,.flex-items2{
 		display: flex;
 		flex-direction: row;
-		flex-wrap: nowrap;
-		justify-content: center;
-		align-content: center;
-		align-items: center;
-        width: 800px;
-		height: 200px;
-	}
-	.flex-items1{
-		width:360px;
-		height: 160px;
-	}
-	.flex-items2{
-		width:150px;
-		height: 120px;
-	}
-	.flex-items3{
-		width: 50px;
-		height: 60px;
+		justify-content: space-between;
 	}
 </style>	
 </head>
 <body>
+<span id='btn_list'>
+<button id='btn1'>前序遍历</button>
+<button id='btn2'>中序遍历</button>
+<button id='btn3'>后序遍历</button>
+</span>
+
+
 <div class="flex-container">
 	<div class="flex-items1">
 		<div class="flex-items2">
@@ -61,21 +56,93 @@
 	</div>
 </div>
 <script type="text/javascript">
-	var div=document.getElementsByClassName('flex-container')[0];
-	var iterator=document.createNodeIterator(div,NodeFilter.SHOW_ELEMENT,null,false);
-	var node=iterator.nextNode();
-	while(node!=null){
-		// console.log(node.tagName);
-		// node.setAttribute('borderColor','blue');
-		// setTimeout(function(){
-        node.style.borderColor='blue';
-		node.style.borderColor='red';
-		node=iterator.nextNode();
-		// },1);
-		
+//method 1 
+	// var div=document.getElementsByClassName('flex-container')[0];
+	// var iterator=document.createNodeIterator(div,NodeFilter.SHOW_ELEMENT,null,false);
+	// var node=iterator.nextNode();
+	// while(node!=null){
+	// 	// console.log(node.tagName);
+	// 	// node.setAttribute('borderColor','blue');
+	// 	// setTimeout(function(){
+ //        node.style.borderColor='blue';
+	// 	node.style.borderColor='red';
+	// 	node=iterator.nextNode();
+	// 	// },1);	
+	// }
+
+
+//method2
+var timer=null;
+var nodeTree=[];
+var btn_list=document.querySelector('#btn_list');
+var div_list=document.querySelectorAll('div');
+// var btn_list=document.getElementById('btn_list');
+
+btn_list.onclick=function(event){
+		var event=event||window.event;
+		var target=event.target||event.srcElement;
+		if(target.nodeName.toLowerCase()=='button'){
+			switch(target.id){
+				case 'btn1': clear();beforeSort(div_list[0]);render(nodeTree);break;
+				case 'btn2': clear(); inSort(div_list[0]);render(nodeTree);break;
+				case 'btn3': clear(); afterSort(div_list[0]);render(nodeTree);break;
+			}
+		}
+}
+function clear(){
+	clearInterval(timer);
+	var div=document.querySelectorAll('div');
+	var len_div=div.length;
+	for(var i=0;i<len_div;i++){
+		div[i].style.backgroundColor='white';
+	}
+}
+function beforeSort(node){
+	if(node!=null){
+		nodeTree.push(node);
+		console.log('yes');
+		beforeSort(node.firstElementChild);
+		beforeSort(node.lastElementChild);	
+	}
+}
+function inSort(node){
+	if(node!=null){
+		inSort(node.firstElementChild);
+		nodeTree.push(node);
+		inSort(node.lastElementChild);
+
 	}
 
-</script>
+}
+function afterSort(node){
+	if(node!=null){
+		afterSort(node.firstElementChild);
+		afterSort(node.lastElementChild);
+		nodeTree.push(node);
+	}
+}
+function render(arr){
+	// alert(arr);
 
+	var i=0;
+	nodeTree=[];
+	arr[0].style.backgroundColor='blue';
+	var arr_len=arr.length;
+	timer=setInterval(function(){
+		if(i<arr_len-1){
+			i+=1;
+			arr[i-1].style.backgroundColor='white';
+			arr[i].style.backgroundColor='blue';
+		}
+		else{
+			clearInterval(timer);
+			arr[arr_len-1].style.backgroundColor='white';
+		}
+
+	},500);
+
+}
+
+</script>
 </body>
 </html>
